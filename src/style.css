@@ -1,12 +1,70 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* Zen SRE Studio Color Palette */
+  /* Primary Zen colors - calming and professional */
+  --zen-sage: #8b9d8a;
+  /* Muted sage green - primary brand */
+  --zen-charcoal: #2d3132;
+  /* Deep charcoal - main text */
+  --zen-ash: #4a5154;
+  /* Medium gray - secondary text */
+  --zen-mist: #e8ebe9;
+  /* Light gray-green - subtle backgrounds */
+  --zen-paper: #fdfcfb;
+  /* Warm paper white - main background */
+
+  /* 8-bit accent colors - subtle but distinctive */
+  --pixel-mint: #7fb069;
+  /* Fresh mint - success states */
+  --pixel-amber: #d4a574;
+  /* Warm amber - warnings/highlights */
+  --pixel-coral: #c9797a;
+  /* Soft coral - alerts/errors */
+  --pixel-slate: #6b7d7d;
+  /* Cool slate - info/secondary actions */
+
+  /* Japanese red palette - subtle and professional */
+  --japanese-crimson: #a8423f;
+  /* Traditional crimson - professional red accent */
+  --japanese-vermillion: #cc6b49;
+  /* Soft vermillion - warm secondary */
+  --japanese-rust: #9d5a47;
+  /* Earthy rust - grounding tone */
+  --japanese-blush: #e8b4b8;
+  /* Soft blush - very subtle accent */
+
+  /* Japanese lofi influences - warm and organic */
+  --lofi-cream: #f9f6f0;
+  /* Cream paper texture */
+  --lofi-sepia: #e6d7c3;
+  /* Aged paper tone */
+  --lofi-ink: #3d424a;
+  /* Traditional ink color */
+  --lofi-brush: #7a8471;
+  /* Brush stroke green */
+
+  /* Functional colors */
+  --background-primary: var(--zen-paper);
+  --background-secondary: var(--lofi-cream);
+  --background-tertiary: var(--zen-mist);
+  --text-primary: var(--zen-charcoal);
+  --text-secondary: var(--zen-ash);
+  --text-muted: var(--pixel-slate);
+  --accent-primary: var(--zen-sage);
+  --accent-secondary: var(--pixel-mint);
+
+  /* Typography */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --font-display: 'Zen Masters', monospace;
+  font-family: var(--font-body);
+  line-height: 1.6;
   font-weight: 400;
 
+  /* Color scheme */
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-primary);
+  background-color: var(--background-primary);
 
+  /* Typography rendering */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -15,11 +73,15 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--accent-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
 }
+
 a:hover {
-  color: #535bf2;
+  color: var(--japanese-crimson);
+  border-bottom-color: var(--japanese-crimson);
 }
 
 body {
@@ -28,69 +90,511 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+
+  /* Subtle texture overlay for lofi feel */
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(139, 157, 138, 0.05) 1px, transparent 0);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 h1 {
+  font-family: var(--font-display);
   font-size: 3.2em;
   line-height: 1.1;
+  color: var(--text-primary);
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+
+  /* Pixel art style for 8-bit aesthetic */
+  image-rendering: pixelated;
+  text-shadow: 3px 3px 0 rgba(45, 49, 50, 0.2);
+}
+
+/* Heading styles using Zen Masters font */
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 2.2em;
+  /* Pixel art style for 8-bit aesthetic */
+  text-shadow: 2px 2px 0 rgba(45, 49, 50, 0.15);
+}
+
+h3 {
+  font-size: 1.8em;
+  text-shadow: 1px 1px 0 rgba(45, 49, 50, 0.1);
 }
 
 #app {
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem 2rem;
   text-align: center;
+  background: var(--background-primary);
+  border-radius: 12px;
+  box-shadow:
+    0 4px 24px rgba(45, 49, 50, 0.08),
+    0 1px 4px rgba(45, 49, 50, 0.04);
+  border: 1px solid var(--zen-mist);
+
+  /* Glass morphism effect */
+  backdrop-filter: blur(10px);
 }
 
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
-  transition: filter 300ms;
+  transition: all 300ms ease;
+  filter: saturate(1.1);
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em rgba(139, 157, 138, 0.4)) saturate(1.2);
+  transform: translateY(-2px);
 }
+
 .logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+  filter: drop-shadow(0 0 2em rgba(212, 165, 116, 0.4)) saturate(1.2);
 }
 
 .card {
   padding: 2em;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--zen-mist);
+  box-shadow: 0 2px 8px rgba(45, 49, 50, 0.06);
 }
 
 .read-the-docs {
-  color: #888;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+/* Zen-inspired components */
+.zen-badge {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  background: var(--japanese-crimson);
+  color: var(--zen-paper);
+  border-radius: 16px;
+  font-size: 0.8em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pixel-accent {
+  background: linear-gradient(45deg, var(--japanese-crimson), var(--japanese-vermillion));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border: 2px solid var(--japanese-crimson);
+  padding: 0.75em 1.5em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background: linear-gradient(135deg, var(--japanese-crimson) 0%, var(--japanese-vermillion) 100%);
+  color: var(--zen-paper);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
 button:hover {
-  border-color: #646cff;
+  border-color: var(--japanese-vermillion);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(168, 66, 63, 0.3);
 }
+
+button:hover::before {
+  left: 100%;
+}
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid var(--japanese-crimson);
+  outline-offset: 2px;
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Zen Header Styles */
+.zen-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(253, 252, 251, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--zen-mist);
+  transition: all 0.3s ease;
+}
+
+.zen-nav {
+  padding: 1rem 0;
+}
+
+.zen-nav .zen-container {
+  justify-content: center;
+  position: relative;
+}
+
+.zen-nav-brand {
+  margin: 0;
+  position: absolute;
+  left: 0;
+}
+
+.zen-brand-text {
+  color: var(--japanese-crimson);
+  transition: color 0.3s ease;
+}
+
+.zen-nav-links {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.zen-nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.zen-nav-link:hover {
+  color: var(--japanese-vermillion);
+  border-bottom-color: var(--japanese-vermillion);
+}
+
+.zen-nav-link::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 4px;
+  height: 4px;
+  background: var(--pixel-mint);
+  border-radius: 50%;
+  transform: translateY(-50%) scale(0);
+  transition: transform 0.2s ease;
+}
+
+.zen-nav-link:hover::before {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Main content centered without header */
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.zen-main {
+  margin-top: 0;
+}
+
+/* Dark mode header adjustments */
+@media (prefers-color-scheme: dark) {
+  .zen-header {
+    background: rgba(26, 29, 30, 0.95);
+    border-bottom-color: var(--zen-mist);
+  }
+}
+
+/* Mobile header styles */
+@media (max-width: 768px) {
+  .zen-nav .zen-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .zen-nav-links {
+    gap: 1.5rem;
+  }
+
+  .zen-nav-link {
+    font-size: 0.9rem;
+  }
+
+  .zen-main {
+    margin-top: 6.5rem;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    /* Light mode adjustments - keeping the zen aesthetic */
+    --background-primary: var(--zen-paper);
+    --background-secondary: var(--lofi-cream);
+    --text-primary: var(--zen-charcoal);
+    --text-secondary: var(--zen-ash);
   }
-  a:hover {
-    color: #747bff;
+}
+
+/* Dark mode - maintaining zen philosophy with deeper tones */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --zen-paper: #1a1d1e;
+    --lofi-cream: #252829;
+    --zen-mist: #2d3132;
+    --zen-charcoal: #e8ebe9;
+    --zen-ash: #b8bebb;
+    --zen-sage: #9bb09a;
+    --pixel-mint: #8fb87c;
+
+    --background-primary: var(--zen-paper);
+    --background-secondary: var(--lofi-cream);
+    --text-primary: var(--zen-charcoal);
+    --text-secondary: var(--zen-ash);
   }
+
+  body::before {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(155, 176, 154, 0.08) 1px, transparent 0);
+  }
+
   button {
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, var(--zen-sage) 0%, var(--pixel-mint) 100%);
+    color: var(--zen-paper);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #app {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+}
+
+/* Additional utility classes for zen aesthetic */
+.zen-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.zen-section {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--zen-mist);
+}
+
+.zen-text-large {
+  font-size: 1.25em;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.zen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Hero section */
+.zen-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  width: 100%;
+}
+
+/* Navigation tiles styles */
+.zen-navigation-tiles {
+  padding: 2rem 0;
+}
+
+.zen-tile-container {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 2rem auto;
+}
+
+.zen-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  height: 300px;
+  padding: 2rem;
+  background: var(--background-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--zen-mist);
+  box-shadow: 0 4px 16px rgba(45, 49, 50, 0.08);
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.zen-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(45, 49, 50, 0.12);
+  border-color: var(--japanese-vermillion);
+}
+
+.zen-tile-icon {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--zen-sage), var(--japanese-crimson));
+  color: var(--zen-paper);
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.zen-tile:hover .zen-tile-icon {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--japanese-crimson), var(--japanese-vermillion));
+}
+
+.zen-tile h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  text-shadow: 1px 1px 0 rgba(45, 49, 50, 0.1);
+}
+
+.zen-tile p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+/* Philosophy page styles */
+.zen-principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.zen-quote {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  font-weight: 300;
+  color: var(--text-primary);
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--background-secondary);
+  border-left: 3px solid var(--japanese-crimson);
+  border-radius: 4px;
+  position: relative;
+}
+
+.zen-quote cite {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  display: block;
+  text-align: right;
+  font-style: normal;
+}
+
+/* Back to home link styling */
+.home-link {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.home-link a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--japanese-crimson);
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.home-link a:hover {
+  transform: translateX(-3px);
+  color: var(--japanese-vermillion);
+}
+
+/* Responsive styles for tiles */
+@media (max-width: 768px) {
+  .zen-tile-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .zen-tile {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    min-height: 280px;
   }
 }

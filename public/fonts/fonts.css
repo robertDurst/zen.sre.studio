@@ -1,0 +1,16 @@
+/* Zen Masters Font */
+@font-face {
+  font-family: 'Zen Masters';
+  src: url('zen-masters.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 
+Instructions for using Zen Masters font:
+1. Download the Zen Masters font from Iconian Fonts
+2. Convert the font to web formats (ttf, woff, woff2) using a tool like https://transfonter.org/
+3. Place the font files in this directory
+4. The font will be used for headings on the site
+*/
