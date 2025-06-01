@@ -2,7 +2,7 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN rm -f package-lock.json && rm -rf node_modules && npm install
 RUN npm run build
 
 # Production stage
