@@ -397,6 +397,15 @@ main {
     --zen-sage: #9bb09a;
     --pixel-mint: #8fb87c;
 
+    /* Tokyo Night Dark inspired colors for code */
+    --code-bg: #1a1b26;
+    --code-text: #9aa5ce;
+    --code-keyword: #bb9af7;
+    --code-string: #9ece6a;
+    --code-number: #ff9e64;
+    --code-comment: #565f89;
+    --code-function: #7aa2f7;
+
     --background-primary: var(--zen-paper);
     --background-secondary: var(--lofi-cream);
     --text-primary: var(--zen-charcoal);
@@ -583,18 +592,398 @@ main {
   color: var(--japanese-vermillion);
 }
 
-/* Responsive styles for tiles */
-@media (max-width: 768px) {
-  .zen-tile-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+/* Zen Markdown Styling */
+
+/* Markdown Typography */
+.zen-heading-1 {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  color: var(--japanese-crimson);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 2rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--zen-mist);
+  text-shadow: 2px 2px 0 rgba(45, 49, 50, 0.1);
+}
+
+.zen-heading-2 {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--zen-charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 1.8rem 0 0.8rem 0;
+  text-shadow: 1px 1px 0 rgba(45, 49, 50, 0.08);
+}
+
+.zen-heading-3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--zen-ash);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 1.5rem 0 0.6rem 0;
+}
+
+.zen-heading-4 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--zen-ash);
+  letter-spacing: 0.01em;
+  margin: 1.2rem 0 0.5rem 0;
+}
+
+.zen-paragraph {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin: 1rem 0;
+  max-width: 65ch;
+}
+
+.zen-paragraph:first-of-type {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* Zen Quote Styling */
+.zen-quote {
+  font-size: 1.3rem;
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--text-primary);
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: var(--background-secondary);
+  border-left: 4px solid var(--japanese-crimson);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+  max-width: 60ch;
+}
+
+.zen-quote::before {
+  content: '"';
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--japanese-crimson);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+
+/* Zen Lists */
+.zen-list {
+  margin: 1.5rem 0;
+  padding-left: 0;
+  list-style: none;
+  max-width: 60ch;
+}
+
+.zen-list-item {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 2rem;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--japanese-crimson);
+}
+
+/* Ordered lists */
+ol.zen-list {
+  counter-reset: zen-counter;
+}
+
+ol.zen-list .zen-list-item {
+  counter-increment: zen-counter;
+}
+
+ol.zen-list .zen-list-item::before {
+  content: counter(zen-counter, decimal) '.';
+  color: var(--japanese-crimson);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: bold;
+  width: 1.5rem;
+  text-align: right;
+}
+
+/* Code Styling */
+.zen-code-block {
+  background: #1a1b26;
+  /* Tokyo Night Dark background */
+  background-image:
+    linear-gradient(rgba(26, 27, 38, 0.7), rgba(26, 27, 38, 0.7)),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23565f89' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border: 1px solid #565f89;
+  /* Subtle border color */
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(187, 154, 247, 0.1);
+  /* Subtle magenta glow */
+  transition: box-shadow 0.3s ease;
+  position: relative;
+  counter-reset: line;
+}
+
+.zen-code-block code {
+  counter-increment: line;
+}
+
+.zen-code-block .hljs-line::before {
+  content: counter(line);
+  display: inline-block;
+  width: 1.5em;
+  padding-right: 1em;
+  margin-right: 1em;
+  text-align: right;
+  color: #565f89;
+  /* Subtle color for line numbers */
+  border-right: 1px solid #565f89;
+  user-select: none;
+}
+
+/* Enhance scrollbar for code blocks */
+.zen-code-block::-webkit-scrollbar {
+  height: 8px;
+  background-color: #1a1b26;
+}
+
+.zen-code-block::-webkit-scrollbar-thumb {
+  background-color: #565f89;
+  border-radius: 4px;
+}
+
+.zen-code-block::-webkit-scrollbar-thumb:hover {
+  background-color: #bb9af7;
+}
+
+.zen-code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Highlight.js customizations */
+.hljs {
+  background: #1a1b26 !important;
+  /* Tokyo Night Dark background */
+  color: #9aa5ce !important;
+  /* Base text color */
+  padding: 0 !important;
+  /* Reset padding since we style the pre element */
+}
+
+/* Style overrides for better integration with zen theme */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-name,
+.hljs-strong {
+  color: #bb9af7 !important;
+  /* Magenta for keywords - zen/ninja aesthetic */
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-doctag {
+  color: #7dcfff !important;
+  /* Light blue for titles */
+}
+
+.hljs-string,
+.hljs-attr,
+.hljs-symbol,
+.hljs-attribute {
+  color: #9ece6a !important;
+  /* Green for strings */
+}
+
+.hljs-literal,
+.hljs-number,
+.hljs-deletion,
+.hljs-code {
+  color: #ff9e64 !important;
+  /* Orange for numbers */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-meta {
+  color: #565f89 !important;
+  /* Subtle comments */
+  font-style: italic;
+}
+
+.hljs-function,
+.hljs-class .hljs-title {
+  color: #7aa2f7 !important;
+  /* Blue for functions */
+}
+
+.hljs-variable,
+.hljs-template-variable {
+  color: #e0af68 !important;
+  /* Yellow for variables */
+}
+
+/* Add line number styling */
+.zen-code-block {
+  position: relative;
+  max-width: 50%;
+  margin-left: 25%;
+}
+
+.zen-code-block::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  background: rgba(26, 27, 38, 0.8);
+  /* Tokyo Night Dark background with transparency */
+  color: #bb9af7;
+  /* Magenta color for zen/ninja aesthetic */
+  border-bottom-left-radius: 4px;
+  border-left: 1px solid #565f89;
+  border-bottom: 1px solid #565f89;
+  font-family: var(--font-display);
+  /* Use zen font for language tag */
+  text-transform: lowercase;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  /* Use the zen font for the language label */
+}
+
+.zen-inline-code {
+  background: rgba(26, 27, 38, 0.8);
+  /* Tokyo Night Dark background with transparency */
+  color: #9aa5ce;
+  /* Base text color from Tokyo Night */
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+  border: 1px solid #565f89;
+  /* Subtle border color */
+}
+
+/* Emphasis and Strong */
+.zen-emphasis {
+  font-style: italic;
+  color: var(--japanese-crimson);
+}
+
+.zen-strong {
+  font-weight: 600;
+  color: var(--zen-charcoal);
+}
+
+/* Loading and Error States */
+.zen-loading {
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+.zen-error {
+  color: var(--pixel-coral);
+  background: var(--zen-mist);
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 3px solid var(--pixel-coral);
+}
+
+/* Zen Content Container */
+.zen-content {
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--background-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(45, 49, 50, 0.08);
+  border: 1px solid var(--zen-mist);
+}
+
+/* Zen Table Styling */
+.zen-content table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  overflow: hidden; /* Ensures border-radius is respected by child elements */
+  box-shadow: 0 2px 8px rgba(45, 49, 50, 0.06);
+}
+
+.zen-content th,
+.zen-content td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--zen-mist);
+}
+
+.zen-content th {
+  background-color: var(--lofi-cream); /* Slightly different background for headers */
+  color: var(--japanese-crimson);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.zen-content tr:last-child td {
+  border-bottom: none; /* Remove bottom border for the last row */
+}
+
+.zen-content td img {
+  max-width: 100px; /* Control image size within table cells */
+  height: auto;
+  border-radius: 4px; /* Consistent border-radius */
+  display: block; /* Helps with alignment if needed */
+}
+
+/* Dark mode table adjustments */
+@media (prefers-color-scheme: dark) {
+  .zen-content table {
+    background-color: var(--lofi-cream); /* Darker secondary background */
+    border: 1px solid var(--zen-ash); /* Darker border */
   }
 
-  .zen-tile {
-    width: 100%;
-    max-width: 320px;
-    height: auto;
-    min-height: 280px;
+  .zen-content th,
+  .zen-content td {
+    border-bottom: 1px solid var(--zen-ash); /* Darker border for rows */
+  }
+
+  .zen-content th {
+    background-color: var(--zen-paper); /* Darker header background */
+    color: var(--pixel-mint); /* Brighter text for contrast */
+  }
+}
+
+/* Responsive table adjustments */
+@media (max-width: 768px) {
+  .zen-content th,
+  .zen-content td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .zen-content td img {
+    max-width: 80px;
   }
 }

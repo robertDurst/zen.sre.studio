@@ -7,9 +7,14 @@
     "dev": "vite",
     "hot": "vite --host --port 3000 --open",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "create-page": "node scripts/create-page.js"
   },
   "devDependencies": {
+    "marked": "^15.0.12",
     "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1"
   }
 }
