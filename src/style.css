@@ -640,7 +640,6 @@ main {
   line-height: 1.8;
   color: var(--text-primary);
   margin: 1rem 0;
-  max-width: 65ch;
 }
 
 .zen-paragraph:first-of-type {
