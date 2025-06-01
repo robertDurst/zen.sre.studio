@@ -925,7 +925,8 @@ ol.zen-list .zen-list-item::before {
   font-size: 1rem;
   background-color: var(--background-secondary);
   border-radius: 8px;
-  overflow: hidden; /* Ensures border-radius is respected by child elements */
+  overflow: hidden;
+  /* Ensures border-radius is respected by child elements */
   box-shadow: 0 2px 8px rgba(45, 49, 50, 0.06);
 }
 
@@ -937,7 +938,8 @@ ol.zen-list .zen-list-item::before {
 }
 
 .zen-content th {
-  background-color: var(--lofi-cream); /* Slightly different background for headers */
+  background-color: var(--lofi-cream);
+  /* Slightly different background for headers */
   color: var(--japanese-crimson);
   font-family: var(--font-display);
   font-weight: 500;
@@ -947,36 +949,46 @@ ol.zen-list .zen-list-item::before {
 }
 
 .zen-content tr:last-child td {
-  border-bottom: none; /* Remove bottom border for the last row */
+  border-bottom: none;
+  /* Remove bottom border for the last row */
 }
 
 .zen-content td img {
-  max-width: 100px; /* Control image size within table cells */
+  max-width: 100px;
+  /* Control image size within table cells */
   height: auto;
-  border-radius: 4px; /* Consistent border-radius */
-  display: block; /* Helps with alignment if needed */
+  border-radius: 4px;
+  /* Consistent border-radius */
+  display: block;
+  /* Helps with alignment if needed */
 }
 
 /* Dark mode table adjustments */
 @media (prefers-color-scheme: dark) {
   .zen-content table {
-    background-color: var(--lofi-cream); /* Darker secondary background */
-    border: 1px solid var(--zen-ash); /* Darker border */
+    background-color: var(--lofi-cream);
+    /* Darker secondary background */
+    border: 1px solid var(--zen-ash);
+    /* Darker border */
   }
 
   .zen-content th,
   .zen-content td {
-    border-bottom: 1px solid var(--zen-ash); /* Darker border for rows */
+    border-bottom: 1px solid var(--zen-ash);
+    /* Darker border for rows */
   }
 
   .zen-content th {
-    background-color: var(--zen-paper); /* Darker header background */
-    color: var(--pixel-mint); /* Brighter text for contrast */
+    background-color: var(--zen-paper);
+    /* Darker header background */
+    color: var(--pixel-mint);
+    /* Brighter text for contrast */
   }
 }
 
 /* Responsive table adjustments */
 @media (max-width: 768px) {
+
   .zen-content th,
   .zen-content td {
     padding: 0.75rem;
