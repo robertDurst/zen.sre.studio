@@ -4,7 +4,7 @@ import hljs from 'highlight.js';
 // Configure marked for our zen aesthetic
 marked.setOptions({
   gfm: true, // GitHub Flavored Markdown
-  breaks: true, // Convert \n to <br>
+  breaks: false, // Don't convert \n to <br> as it interferes with parsing
   sanitize: false, // Allow HTML (we control the content)
   smartypants: true, // Use smart quotes and dashes
   highlight: function(code, lang) {
@@ -22,11 +22,11 @@ marked.setOptions({
 // Custom renderer for zen-styled markdown
 const renderer = new marked.Renderer();
 
-// Custom heading renderer with zen classes
-renderer.heading = function(value) {
-  const text = value['text'];
-  const level = value['depth'];
-  const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+// Override specific methods to add zen styling
+renderer.heading = function(token) {
+  const text = this.parser.parseInline(token.tokens);
+  const level = token.depth;
+  const escapedText = token.text.toLowerCase().replace(/[^\w]+/g, '-');
   const zenClass = level === 1 ? 'zen-heading-1' : 
                    level === 2 ? 'zen-heading-2' : 
                    level === 3 ? 'zen-heading-3' : 
@@ -35,72 +35,110 @@ renderer.heading = function(value) {
   return `<h${level} id="${escapedText}" class="${zenClass}">${text}</h${level}>`;
 };
 
-// Custom paragraph renderer
-renderer.paragraph = function(value) {
-  const text = value['text'];
+renderer.paragraph = function(token) {
+  // Process inline tokens to handle links, bold, italic, etc.
+  const text = this.parser.parseInline(token.tokens);
   return `<p class="zen-paragraph">${text}</p>`;
 };
 
-// Custom blockquote renderer
-renderer.blockquote = function(value) {
-  const quote = value['text'];
+renderer.blockquote = function(token) {
+  // Blockquotes contain block tokens, not inline tokens
+  const quote = token.tokens ? this.parser.parse(token.tokens) : token.text;
   return `<blockquote class="zen-quote">${quote}</blockquote>`;
 };
 
-// Custom list renderer
-renderer.list = function(value) {
-  const items = value['items'];
-  const ordered = value['ordered'];
-  const body = items.map(item => {
-    const text = item['text'];
-    return `<li class="zen-list-item">${text}</li>`;
-  }).join('');
-
-  return ordered ?
+renderer.list = function(token) {
+  const body = token.items.map(item => 
+    `<li class="zen-list-item">${item.text}</li>`
+  ).join('');
+  
+  return token.ordered ?
     `<ol class="zen-ordered-list">${body}</ol>` :
     `<ul class="zen-unordered-list">${body}</ul>`;
 };
 
-// Custom code renderer
-renderer.code = function(value) {
-  const code = value['text'];
-  const language = value['lang'] || '';
+renderer.listitem = function(token) {
+  const text = this.parser.parseInline(token.tokens);
+  return `<li class="zen-list-item">${text}</li>`;
+};
+
+renderer.code = function(token) {
+  const code = token.text;
+  const lang = token.lang || '';
   
   let highlightedCode = code;
-  if (language && hljs.getLanguage(language)) {
+  if (lang && hljs.getLanguage(lang)) {
     try {
-      highlightedCode = hljs.highlight(code, { language }).value;
+      highlightedCode = hljs.highlight(code, { language: lang }).value;
     } catch (error) {
       console.error('Error highlighting code:', error);
     }
   }
   
-  return `<pre class="zen-code-block" data-language="${language}"><code class="zen-code ${language ? `language-${language}` : ''}">${highlightedCode}</code></pre>`;
+  return `<pre class="zen-code-block" data-language="${lang}"><code class="zen-code ${lang ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`;
 };
 
-// Custom inline code renderer
-renderer.codespan = function(value) {
-  console.log('Inline code value:', value);
-  const code = value['text'];
-  return `<code class="zen-inline-code">${code}</code>`;
+renderer.codespan = function(token) {
+  return `<code class="zen-inline-code">${token.text}</code>`;
 };
 
-// Custom emphasis renderer
-renderer.em = function(value) {
-  console.log('Emphasis value:', value);
-  const text = value['text'];
-  return `<em class="zen-emphasis">${text}</em>`;
+renderer.em = function(token) {
+  return `<em class="zen-emphasis">${token.text}</em>`;
 };
 
-// Custom strong renderer
-renderer.strong = function(value) {
-  console.log('Strong value:', value);
-  const text = value['text'];
-  return `<strong class="zen-strong">${text}</strong>`;
+renderer.strong = function(token) {
+  return `<strong class="zen-strong">${token.text}</strong>`;
+};
+
+renderer.link = function(token) {
+  const href = token.href;
+  const title = token.title || '';
+  const text = token.text;
+  
+  // Add zen styling and ensure external links open in new tab
+  const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'));
+  const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+  const titleAttr = title ? ` title="${title}"` : '';
+  
+  return `<a href="${href}" class="zen-link"${titleAttr}${target}>${text}</a>`;
 };
 
 // Set the custom renderer
 marked.setOptions({ renderer });
+
+/**
+ * Preprocess markdown to handle footnotes and reference-style links.
+ * Converts [^1] to a superscript link and [1]: ... to an inline link.
+ * @param {string} markdown - The markdown content
+ * @returns {string} - The preprocessed markdown
+ */
+function preprocessFootnotes(markdown) {
+  // Extract reference links: [1]: [text](url)
+  const refLinkRegex = /^\[(\d+)\]: \[([^\]]+)\]\(([^\)]+)\)/gm;
+  const refLinks = {};
+  let match;
+  while ((match = refLinkRegex.exec(markdown)) !== null) {
+    refLinks[match[1]] = {
+      text: match[2],
+      url: match[3]
+    };
+  }
+
+  // Replace [^1] with superscript link to bibliography
+  let processed = markdown.replace(/\[\^(\d+)\]/g, (m, num) => {
+    if (refLinks[num]) {
+      return `<sup class="zen-footnote-ref"><a href="#footnote-${num}" id="ref-${num}">[${num}]</a></sup>`;
+    }
+    return m;
+  });
+
+  // Replace bibliography [1]: ... with HTML anchors
+  processed = processed.replace(refLinkRegex, (m, num, text, url) => {
+    return `<div class="zen-footnote-item" id="footnote-${num}"><sup>[${num}]</sup> <a href="${url}" class="zen-link" target="_blank" rel="noopener noreferrer">${text}</a></div>`;
+  });
+
+  return processed;
+}
 
 /**
  * Parse markdown content into HTML with zen styling
@@ -108,7 +146,9 @@ marked.setOptions({ renderer });
  * @returns {string} - The parsed HTML
  */
 export function parseMarkdown(markdown) {
-  return marked(markdown);
+  // Preprocess for footnotes and reference links
+  const preprocessed = preprocessFootnotes(markdown);
+  return marked(preprocessed);
 }
 
 /**
